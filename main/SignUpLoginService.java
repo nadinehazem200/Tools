@@ -14,7 +14,7 @@ public class SignUpLoginService {
 
     @PersistenceContext
     private EntityManager em;
-    @GET
+    @POST
     @Path("customer-login")
     public String customerLogin(Customer c)
     {
@@ -24,7 +24,7 @@ public class SignUpLoginService {
         return "logged in successfully";
     }
 
-    @GET
+    @POST
     @Path("restaurantOwner-login")
     public String restaurantOwnerLogin(RestaurantOwner ro)
     {
@@ -33,7 +33,7 @@ public class SignUpLoginService {
             return "Failed log in, restaurant owner is not registered before";
         return "logged in successfully";
     }
-    @GET
+    @POST
     @Path("runner-login")
     public String runnerLogin(Runner ru)
     {
