@@ -1,5 +1,3 @@
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -9,18 +7,25 @@ import javax.persistence.TypedQuery;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import javax.persistence.Entity;
-
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 
 @Stateless
-@Path("customerServices")
+@Path("/customerServices")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CustomerService {
 
+	@GET
+	@Path("/get")
+	@Produces("txt")
+	public String get()
+	{
+		return "abdo";
+	}
 	@PersistenceContext
 	private EntityManager em;
-	@Path("createOrder")
+	@Path("/createOrder")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String createOrder(Order order)
@@ -58,7 +63,7 @@ public class CustomerService {
 	}
 
 	@PUT
-	@Path("editeOrder")
+	@Path("/editeOrder")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String editOrder(Order order)
 	{
@@ -95,7 +100,7 @@ public class CustomerService {
 		}
 	}
 	@GET
-	@Path("restaurantsList")
+	@Path("/restaurantsList")
 	public String listAllRestaurants()
 	{
 		try {
@@ -114,7 +119,8 @@ public class CustomerService {
 	}
 
 	@GET
-	@Path("listOrdersByCustomer/{id}")
+	@Path("/listOrdersByCustomer/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
 	public List<Order> listOrdersByCustomerId(@PathParam("id") int custId)
 	{
 		try {
