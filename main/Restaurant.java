@@ -1,10 +1,10 @@
-import jakarta.ejb.LocalBean;
-
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@LocalBean
 @Table(name="Restaurant")
 public class Restaurant
 {
