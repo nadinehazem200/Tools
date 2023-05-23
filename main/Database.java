@@ -1,15 +1,12 @@
-import jakarta.ws.rs.ApplicationPath;
-import jakarta.ws.rs.core.Application;
 
+import javax.ws.rs.*;
 import javax.ejb.Stateless;
-import java.sql.*;
-import javax.persistence.Entity;
-
+import javax.ws.rs.core.*;
 
 @Stateless
-@ApplicationPath("/api")
-public class Database extends Application {
-	
+@javax.ws.rs.ApplicationPath("/api")
+public class Database extends javax.ws.rs.core.Application {
+    /*
     public static void createNewDatabase(String fileName) {
 
         String url = "jdbc:sqlite:C:\\sqlite\\db\\" + fileName;
@@ -27,10 +24,10 @@ public class Database extends Application {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public static void connectDatabase(String name) {
         Connection c = null;
-        
+
         try {
            Class.forName("org.sqlite.JDBC");
            c = DriverManager.getConnection("jdbc:sqlite:C:\\sqlite\\db\\" + name);
@@ -40,7 +37,7 @@ public class Database extends Application {
         }
         System.out.println("Opened database successfully");
      }
-    
+
     public static void createRunnerTable(String databaseName)
     {
     	Connection c = null;
@@ -49,15 +46,15 @@ public class Database extends Application {
           Class.forName("org.sqlite.JDBC");
           c = DriverManager.getConnection("jdbc:sqlite:C:\\sqlite\\db\\" + databaseName);
           System.out.println("Opened database successfully");
-    
+
           stmt = c.createStatement();
           String sql = "CREATE TABLE Runner " +
                        "(ID INT PRIMARY KEY     NOT NULL," +
-                       " NAME           TEXT    NOT NULL, " + 
+                       " NAME           TEXT    NOT NULL, " +
                        " Status         TEXT            , " +
-                       " deliveryfees   REAL)"; 
-          stmt.executeUpdate(sql);    
-          stmt.close();    
+                       " deliveryfees   REAL)";
+          stmt.executeUpdate(sql);
+          stmt.close();
           c.close();
         } catch ( Exception e ) {
           System.err.println( e.getClass().getName() + ": " + e.getMessage() );
@@ -65,9 +62,10 @@ public class Database extends Application {
         }
         System.out.println("Table created successfully");
       }
+      */
     /*
     public static void main(String[] args) {
-        connectDatabase("Al-Akeel");
+        //connectDatabase("Al-Akeel");
     	//createRunnerTable("Al-Akeel.db");
     	RestaurantOwner r = new RestaurantOwner();
     	r.setId(1);
@@ -80,7 +78,8 @@ public class Database extends Application {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    }*/
+    }
+    */
 	
     /*public static void main(String[] args) throws ClassNotFoundException
 	{
