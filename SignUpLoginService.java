@@ -1,21 +1,22 @@
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.MediaType;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Entity;
 
 //localhost\akeel\resgisteration\customer-login
-@Path("registration")
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+@Stateless
+@Path("/registration")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-
 public class SignUpLoginService {
 
     @PersistenceContext
     private EntityManager em;
-    @GET
-    @Path("customer-login")
+    @POST
+    @Path("/customer-login")
+    @Consumes(MediaType.APPLICATION_JSON)
     public String customerLogin(Customer c)
     {
         Customer customer = em.find(Customer.class, c.getId());
@@ -24,8 +25,9 @@ public class SignUpLoginService {
         return "logged in successfully";
     }
 
-    @GET
-    @Path("restaurantOwner-login")
+    @POST
+    @Path("/restaurantOwner-login")
+    @Consumes(MediaType.APPLICATION_JSON)
     public String restaurantOwnerLogin(RestaurantOwner ro)
     {
         RestaurantOwner restaurantOwner = em.find(RestaurantOwner.class, ro.getId());
@@ -33,8 +35,9 @@ public class SignUpLoginService {
             return "Failed log in, restaurant owner is not registered before";
         return "logged in successfully";
     }
-    @GET
-    @Path("runner-login")
+    @POST
+    @Path("/runner-login")
+    @Consumes(MediaType.APPLICATION_JSON)
     public String runnerLogin(Runner ru)
     {
         Runner runner = em.find(Runner.class, ru.getId());
@@ -44,7 +47,8 @@ public class SignUpLoginService {
     }
 
     @POST
-    @Path("customer-signup")
+    @Path("/customer-signup")
+    @Consumes(MediaType.APPLICATION_JSON)
     public String customerSignup(Customer c)
     {
         Customer customer = em.find(Customer.class, c.getId());
@@ -57,7 +61,8 @@ public class SignUpLoginService {
     }
 
     @POST
-    @Path("restaurantOwner-signup")
+    @Path("/restaurantOwner-signup")
+    @Consumes(MediaType.APPLICATION_JSON)
     public String restaurantOwnerSignup(RestaurantOwner ro)
     {
         RestaurantOwner restaurantOwner = em.find(RestaurantOwner.class, ro.getId());
@@ -68,7 +73,8 @@ public class SignUpLoginService {
         return "This restaurant owner is registered before";
     }
     @POST
-    @Path("runner-signup")
+    @Path("/runner-signup")
+    @Consumes(MediaType.APPLICATION_JSON)
     public String runnerSignup(Runner ru)
     {
         Runner runner = em.find(Runner.class, ru.getId());
