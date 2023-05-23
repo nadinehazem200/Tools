@@ -1,26 +1,95 @@
-import javax.persistence.*;
-import java.util.Set;
 
-@Entity
-@Table(name="RestaurantOwner")
-public class RestaurantOwner{
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.Set;
+import javax.persistence.Entity;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
+
+@Stateless
+@Path("/restaurantOwnerServices")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+
+public class RestaurantOwnerService {
 	
-	public int getId() {
-		return id;
+	public RestaurantOwnerService() {
+		super();
 	}
-	public void setId(int id) {
-		this.id = id;
+	@PersistenceContext
+	private EntityManager em;
+	@POST
+	@Path("/createNewRestaurant")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String createRestaurantMenu(Restaurant r)
+	{
+		try {
+			em.persist(r);
+			return "This restaurant menu is created successfully\n";
+		}
+		catch (Exception p)
+		{
+			return p.toString();
+		}
 	}
-	public String getName() {
-		return name;
+
+	@Path("/editRestaurantMenu/{id}")
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String editRestaurant(@PathParam("id") int id, Set<Meal> newMeals)
+	{
+		try{
+			Restaurant r = em.find(Restaurant.class, id);
+			r.setMeals(newMeals);
+			em.merge(r);
+			return "The restaurant menu has been edited successfully\n";
+		}
+		catch(Exception p)
+		{
+			return p.toString();
+		}
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	@GET
+	@Path("/getRestaurantDetails/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Restaurant getRestaurantDetails(@PathParam("id") int restaurantid)
+	{
+		try{
+			Restaurant r = em.find(Restaurant.class, restaurantid);
+			return r;
+		}
+		catch(Exception p)
+		{
+			return null;
+		}
 	}
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	protected int id;
-	protected String name;
-	@OneToMany(mappedBy = "restaurantOwner")
-	private Set<Restaurant> restaurant;
+	@GET
+	@Path("/getRestaurantReport/{id}")
+	public String createRestaurantReport(@PathParam("id") int restaurantid)
+	{
+		try {
+			Query totalAmountsOfCompletedOrders = em.createQuery("SELECT SUM(o.total price) FROM Order o WHERE o.status = Delivered, o.fk_restaurantId = :id", Order.class);
+			Query numOfCompletedOrders = em.createQuery("SELECT COUNT(*) FROM Order WHERE status = Delivered, fk_restaurantId = :id", Order.class);
+			Query numOfCancelledOrders = em.createQuery("SELECT COUNT(*) FROM Order WHERE status = Cancelled, fk_restaurantId = :id", Order.class);
+			totalAmountsOfCompletedOrders.setParameter("id", restaurantid);
+			numOfCompletedOrders.setParameter("id", restaurantid);
+			numOfCancelledOrders.setParameter("id", restaurantid);
+
+			return " ------------ Report -------------" +
+					"\nRestaurant Name: " + em.find(Restaurant.class, restaurantid).getName() +
+					"\nTotal amount of all completed orders: " + (double) totalAmountsOfCompletedOrders.getSingleResult() +
+					"\nNumber of completed orders: " + (double) numOfCompletedOrders.getSingleResult() +
+					"\nNumber of cancelled orders: " + (double) numOfCancelledOrders.getSingleResult() + "\n";
+		}
+		catch (Exception p)
+		{
+			return p.toString();
+		}
+	}
+	public void add(RestaurantOwner r2){
+            this.em.persist(r2);
+	}
 }
